@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/RofaR/OneDrive/Desktop/A2%20Mlops/mlruns/931895207154647443/b99a85a4a3f946309e4c0f1f57844103/artifacts
+deleted_time: 1773092202676
+end_time: null
+entry_point_name: ''
+experiment_id: '931895207154647443'
+lifecycle_stage: deleted
+run_id: b99a85a4a3f946309e4c0f1f57844103
+run_name: GAN_lr_0.001_BS_64
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1773092000129
+status: 1
+tags: []
+user_id: RofaR
