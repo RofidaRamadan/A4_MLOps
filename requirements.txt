@@ -1,2 +1,14 @@
+<<<<<<< HEAD
 torch
 tensorflow
+=======
+tensorflow==2.15.0
+keras
+pandas
+scikit-learn
+numpy
+matplotlib
+gymnasium
+mlflow
+dvc[gdrive]
+>>>>>>> 3ad076b (Bypass DVC block and move to training)

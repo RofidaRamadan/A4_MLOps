@@ -1,0 +1,59 @@
+name: ML Pipeline
+
+on: [push]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Pull Data
+              run: |
+                mkdir -p data
+                echo "Mock data for CI/CD" > data/placeholder.txt
+                echo "DVC pull skipped (Mocked for assignment)"
+
+      - name: Train
+        env:
+          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+        run: |
+          python train.py > output.txt
+          cat output.txt
+          grep "RUN_ID:" output.txt | awk '{print $2}' > model_info.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: model-info
+          path: model_info.txt
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - uses: actions/download-artifact@v4
+        with:
+          name: model-info
+
+      - name: Check Threshold
+        env:
+          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+        run: |
+          pip install mlflow
+          python check_threshold.py
+
+      - name: Docker Mock Build
+        if: success()
+        run: |
+          RID=$(cat model_info.txt)
+          docker build --build-arg RUN_ID=$RID -t my-model:latest .

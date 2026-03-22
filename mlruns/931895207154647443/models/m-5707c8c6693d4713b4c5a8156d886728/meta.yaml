@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/RofaR/OneDrive/Desktop/A2%20Mlops/mlruns/931895207154647443/models/m-5707c8c6693d4713b4c5a8156d886728/artifacts
+creation_timestamp: 1773093476399
+experiment_id: '931895207154647443'
+last_updated_timestamp: 1773093496800
+model_id: m-5707c8c6693d4713b4c5a8156d886728
+model_type: null
+name: generator_model
+source_run_id: 358b609c70404ebea01aa87cba6bb4c3
+status: 2
+status_message: null
