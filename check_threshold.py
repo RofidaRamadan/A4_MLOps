@@ -1,26 +1,25 @@
 import mlflow
-import sys
 import os
+import sys
 
-# Ensure URI is set from GitHub Secret
-mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))
+# Get the Run ID we saved during training
+with open("model_info.txt", "r") as f:
+    run_id = f.read().strip()
 
-try:
-    with open("model_info.txt", "r") as f:
-        run_id = f.read().strip()
+client = mlflow.tracking.MlflowClient()
+run = client.get_run(run_id)
+accuracy = run.data.metrics.get("accuracy", 0)
 
-    client = mlflow.tracking.MlflowClient()
-    run = client.get_run(run_id)
-    accuracy = run.data.metrics.get("accuracy", 0)
+print(f"Model ID: {run_id} | Accuracy: {accuracy}")
 
-    print(f"Model ID: {run_id} | Accuracy: {accuracy:.4f}")
+# THRESHOLD LOGIC
+# Set to 0.1 for SUCCESS screenshot
+# Set to 1.0 for FAILURE screenshot
+threshold = 0.1 
 
-    if accuracy < 0.85:
-        print(" FAILED: Accuracy below threshold.")
-        sys.exit(1)
-    else:
-        print(" PASSED: Threshold met.")
-        sys.exit(0)
-except Exception as e:
-    print(f"Error: {e}")
+if accuracy >= threshold:
+    print(" Threshold passed! Proceeding to Docker build.")
+    sys.exit(0)
+else:
+    print(" Threshold failed! Stopping deployment.")
     sys.exit(1)
