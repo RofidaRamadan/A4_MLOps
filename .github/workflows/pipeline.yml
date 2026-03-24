@@ -55,3 +55,5 @@ jobs:
           RID=$(cat model_info.txt)
           echo "Building Docker for Model: $RID"
           docker build --build-arg RUN_ID=$RID -t gan-model:latest .
+          --build-arg MLFLOW_TRACKING_URI=$MLFLOW_TRACKING_URI \
+            -t gan-model:latest .
